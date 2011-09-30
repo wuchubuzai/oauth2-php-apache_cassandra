@@ -100,9 +100,9 @@ class CassandraOAuth2 extends OAuth2 {
 	/**
 	 * Implements OAuth2::setAccessToken().
 	 */
-	protected function setAccessToken($oauth_token, $client_id, $expires, $scope = NULL) {
+	protected function setAccessToken($oauth_token, $client_id, $expires, $scope = NULL) {        
 		try {
-			$client = $this->db->insert('tokens', array($oauth_token => json_encode(array('client_id' => $client_id, 'expires' => $expires, 'scope' => $scope))));
+			$client = $this->db->insert('tokens', array($oauth_token => json_encode(array('client_id' => $client_id, 'expires' => $expires, 'scope' => $scope))), null, $ttl=$expires);
 		} catch (Exception $e) {
 			return FALSE;
 		}		
@@ -133,7 +133,7 @@ class CassandraOAuth2 extends OAuth2 {
 	 */
 	protected function setAuthCode($code, $client_id, $redirect_uri, $expires, $scope = NULL) {
 		try { 
-			$this->db->insert('auth_codes', array($code => json_encode(array('client_id' => $client_id, 'redirect_uri' => $redirect_uri, 'expires' => $expires, 'scope' => $scope))));
+			$this->db->insert('auth_codes', array($code => json_encode(array('client_id' => $client_id, 'redirect_uri' => $redirect_uri, 'expires' => $expires, 'scope' => $scope))), null, $ttl=$expires);
 		} catch (Exception $e) {
 			return FALSE;
 		}
