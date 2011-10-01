@@ -75,7 +75,7 @@ class CassandraOAuth2 extends OAuth2 {
 	protected function getRedirectUri($client_id) {
 		try {
 			$client = $this->db->get('clients', array($client_id));
-			$client_info = json_decode($client[$client_id], true);
+			$client_info = json_decode($client[$client_id], TRUE);
 			if (isset($client_info['redirect_uri'])) {
 				return $client_info['redirect_uri'];
 			} else {
@@ -91,7 +91,8 @@ class CassandraOAuth2 extends OAuth2 {
 	 */
 	protected function getAccessToken($oauth_token) {
 		try {
-			return $this->db->get('tokens', array($oauth_token));
+			$token = $this->db->get('tokens', array($oauth_token));
+			return json_decode($token[$oauth_token], TRUE);
 		} catch (Exception $e) {
 			return FALSE;
 		}		
@@ -122,7 +123,8 @@ class CassandraOAuth2 extends OAuth2 {
 	 */
 	protected function getAuthCode($code) {
 		try { 
-			return $this->db->get('auth_codes', array($code));
+			$auth_code = $this->db->get('auth_codes', array($code));
+			return json_decode($auth_code[$code], TRUE);
 		} catch (Exception $e) { 
 			return FALSE;
 		}
