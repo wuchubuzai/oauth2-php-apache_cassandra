@@ -122,7 +122,7 @@ class CassandraOAuth2 extends OAuth2 {
 	 */
 	protected function getAuthCode($code) {
 		try { 
-			return $this->db->get('auth_codes', array('$code'));
+			return $this->db->get('auth_codes', array($code));
 		} catch (Exception $e) { 
 			return FALSE;
 		}
